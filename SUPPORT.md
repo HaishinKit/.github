@@ -4,9 +4,12 @@ HaishinKit contributors have limited availability to address general support que
 ## 📕 Bug report.
 A good bug report must meet the following conditions. We consider a well-written bug report a valuable asset to the community and welcome submissions from everyone.
 
-1. **Aimed at solving the problem**  
-2. **Concise documentation of the three key elements: ① Observed behavior, ② Expected behavior, ③ Steps to reproduce**  
-3. **Written in a way understandable to a third-party maintainer**  
+* Aimed at solving the problem.
+* The following three points must be fully and precisely stated, with neither omission nor excess.
+  1. **Observed behavior**<br />What kind of issue are you experiencing? Please let us know what is happening on your end.
+  1. **Expected behavior**<br />Please tell us what behavior you expect from the program. For example, being able to watch the live stream stably, or being able to stream live content reliably. Just briefly let us know what you expect.
+  1. **Steps to reproduce**<br />Since this is a library, issues may occur depending on how it is used. It doesn't have to be 100% reproducible—please let us know how you used the API and what actions you took.
+* Written in a way understandable to a third-party maintainer
 
 Bug reports that fail to meet these criteria are considered your problem, not ours. Please address them independently.
 
@@ -126,13 +129,3 @@ We only provide this information to GitHub sponsors and some contributors. This 
 
 #### Can you implement this feature?
 Please request it as a suggestion in the Ideas section of the GitHub Discussion. If I find the feature to be beneficial, I may implement it. Additionally, I do accept paid development requests.
-
-### 📝 日本語
-### 次回のリリースはいつされますか？
-GitHubのスポンサー様と一部の貢献者にのみお答えしています。ある程度PRが溜まってからリリースしています。緊急の場合は、300USDで実施しております。
-### こういう機能はありますか？
-GitHubのスポンサー様と一部の貢献者にのみお答えしています。主要な機能なREADME.mdに記載しています。また、Exampleアプリを提供しています。そちらで試してみてご判断ください。
-### こういう機能の実装予定はありますか？
-GitHubのスポンサー様と一部の貢献者にのみお答えしています。個人開発のOSSであり開発ペースは早くはありません。もし、あると回答しても1年後になったり、半年後になったりする可能性もあり。実装予定はないと思ってくれたほうがよいです。
-### こういう機能を実装してくれますか？
-GitHub DiscussionのIdeaに要望としてリクエストしてください。有益な機能であると私が判断した場合に実装する場合があります。また、有料での開発相談は受け付けています。
