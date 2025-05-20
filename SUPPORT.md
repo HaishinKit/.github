@@ -117,15 +117,14 @@ These reports lacked sufficient details for "Observed Behavior," "Expected Behav
 </details>
 
 ## ✍️ Frequently Asked Questions and Answers
-### 📝 English
-#### When will the next release be?
+### When will the next release be?
 We only provide this information to GitHub sponsors and some contributors. Releases are made once a certain number of PRs have accumulated. In urgent cases, we can release for a fee of 300 USD.
 
-#### Does this feature exist?
+### Does this feature exist?
 We only provide this information to GitHub sponsors and some contributors. The main features are listed in the README.md. We also offer a sample app. Please try it out and judge for yourself.
 
-#### Is there a plan to implement this feature?
+### Is there a plan to implement this feature?
 We only provide this information to GitHub sponsors and some contributors. This is an individually developed OSS, so the development pace is not fast. Even if I say it will be implemented, it could take a year or six months, so it's better to assume there are no plans to implement it.
 
-#### Can you implement this feature?
+### Can you implement this feature?
 Please request it as a suggestion in the Ideas section of the GitHub Discussion. If I find the feature to be beneficial, I may implement it. Additionally, I do accept paid development requests.
