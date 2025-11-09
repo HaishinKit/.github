@@ -1,0 +1,24 @@
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Notes:**
+        1. Replies from @shogo4405 are not provided. If you need support, please consider [becoming a sponsor](https://github.com/HaishinKit/HaishinKit.swift?tab=readme-ov-file#-sponsors).
+        2. If you have multiple questions, we recommend creating separate posts for each. Some questions may be missed otherwise.
+  - type: textarea
+    id: question
+    attributes:
+      label: "Question"
+      description: "Please describe your question as clearly as possible."
+      placeholder: "Example: The stream crashes when starting on iOS 17."
+  - type: textarea
+    id: context
+    attributes:
+      label: "Background / Tried Steps"
+      description: "Provide any relevant background information and steps you have already tried."
+  - type: textarea
+    id: environment
+    attributes:
+      label: "Environment"
+      description: "Please specify the device, OS version, and HaishinKit version."
+      placeholder: "Example: iPhone 15 Pro, iOS 18.1, HaishinKit 2.0.0"
