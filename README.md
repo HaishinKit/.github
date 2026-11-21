@@ -6,6 +6,8 @@ Organization-wide community files and reusable GitHub Actions workflows for Hais
 
 ## 📋 Release milestones
 
+Milestone automation is enabled only for HaishinKit.swift, HaishinKit.dart, and HaishinKit.kt.
+
 The [shared workflow](.github/workflows/milestones.yml) manages milestones in the **calling repository**:
 
 - **PR merged into the default branch:** preserve an existing milestone, or assign the earliest open release milestone (`0.20.4` or `v0.20.4`). If none exists, leave the PR unassigned. Closed and non-version milestones are never used as a fallback.
