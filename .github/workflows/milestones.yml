@@ -1,0 +1,92 @@
+name: Manage release milestones
+
+on:
+  workflow_call:
+    inputs:
+      release-tag:
+        description: Published release tag; omit to handle the caller event
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  milestones:
+    if: >-
+      inputs.release-tag != '' ||
+      (github.event_name == 'release' && github.event.action == 'published') ||
+      (github.event_name == 'pull_request_target' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    steps:
+      # Do not check out or execute code from the caller or the pull request.
+      - name: Update milestone
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release-tag }}
+        shell: bash
+        run: |
+          /usr/bin/ruby -rjson -ropen3 <<'RUBY'
+          def api(*arguments)
+            output, error, status = Open3.capture3('gh', 'api', *arguments)
+            raise "GitHub API request failed: #{error}" unless status.success?
+
+            JSON.parse(output)
+          end
+
+          def version(title)
+            match = /\Av?(\d+)\.(\d+)\.(\d+)\z/.match(title)
+            match && match.captures.map(&:to_i)
+          end
+
+          begin
+            event = JSON.parse(File.read(ENV.fetch('GITHUB_EVENT_PATH')))
+            repository = ENV.fetch('GITHUB_REPOSITORY')
+            tag = ENV.fetch('RELEASE_TAG', '')
+            tag = event.dig('release', 'tag_name').to_s if tag.empty? && ENV['GITHUB_EVENT_NAME'] == 'release'
+            milestones_path = "repos/#{repository}/milestones"
+
+            if !tag.empty?
+              # Confirm publication, including calls from workflows using GITHUB_TOKEN.
+              releases = api('--paginate', '--slurp', "repos/#{repository}/releases?per_page=100").flatten
+              release = releases.find { |item| item['tag_name'] == tag && !item['draft'] && item['published_at'] }
+              raise "No published release found for #{tag}" unless release
+
+              milestones = api('--paginate', '--slurp', "#{milestones_path}?state=open&per_page=100").flatten
+              matches = milestones.select { |item| item['title'].delete_prefix('v') == tag.delete_prefix('v') }
+              if matches.empty?
+                puts "::notice::No open milestone matches release #{tag}; nothing to close."
+              end
+              matches.each do |milestone|
+                api('--method', 'PATCH', "#{milestones_path}/#{Integer(milestone.fetch('number'))}", '-f', 'state=closed')
+                puts "Closed milestone #{milestone.fetch('title')}."
+              end
+            else
+              pr = event.fetch('pull_request')
+              exit unless pr['merged'] && pr.dig('base', 'ref') == event.dig('repository', 'default_branch')
+
+              issue_path = "repos/#{repository}/issues/#{Integer(pr.fetch('number'))}"
+              issue = api(issue_path)
+              if issue['milestone']
+                puts 'PR already has a milestone; keeping the existing assignment.'
+                exit
+              end
+
+              milestones = api('--paginate', '--slurp', "#{milestones_path}?state=open&per_page=100").flatten
+              milestone = milestones.select { |item| version(item.fetch('title')) }.min_by { |item| [version(item.fetch('title')), item.fetch('number')] }
+              unless milestone
+                puts '::notice::No open release milestone exists; the PR remains unassigned.'
+                exit
+              end
+
+              api('--method', 'PATCH', issue_path, '-F', "milestone=#{Integer(milestone.fetch('number'))}")
+              puts "Assigned milestone #{milestone.fetch('title')} to PR ##{pr.fetch('number')}."
+            end
+          rescue StandardError => error
+            message = error.message.gsub('%', '%25').gsub("\r", '%0D').gsub("\n", '%0A')
+            puts "::error title=Milestone update failed::#{message}"
+            exit 1
+          end
+          RUBY
